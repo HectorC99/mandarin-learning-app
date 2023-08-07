@@ -1,0 +1,87 @@
+@import '../../assets/variables.scss';
+
+main.dashboard {
+   border-radius: $border-radius;
+   background-color: #333E40;
+   overflow: hidden;
+
+   .main-card-top {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem 40% 2rem 2rem;
+
+      h1 {
+         font-size: 3rem;
+         font-weight: 600;
+         margin-bottom: 4rem;
+      }
+
+      .mct-bar {
+         .mct-bar-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            > * {
+               margin: unset;
+            }
+
+            p {
+               color: rgb(134, 134, 134);
+               font-size: 1.2rem;
+               font-weight: 600;
+               transform: translateY(-1px);
+
+               span {
+                  color: white;
+                  margin-right: 0.4rem;
+                  margin-left: 0.8rem;
+               }
+            }
+         }
+
+         .mct-bar-bottom {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+
+            > * {
+               grid-column: 1 / 2;
+               grid-row: 1 / 2;
+               height: 1rem;
+               border-radius: 2rem;
+
+               &:first-child {
+                  background-color: rgba($color: #333E40, $alpha: 0.5);
+               }
+
+               &:last-child {
+                  background-color: #00FFA3;
+               }
+            }
+         }
+      }
+   }
+
+   .main-card-bottom {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      height: 64.2%;
+      overflow-y: scroll;
+
+      .mcb-heading {
+         color: white;
+      }
+
+      .mcb-lessons {
+         display: flex;
+         flex-direction: column;
+
+         .lesson-card {
+            height: 12rem;
+         }
+      }
+   }
+}

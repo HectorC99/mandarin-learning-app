@@ -1,0 +1,210 @@
+@import '../../assets/variables.scss';
+
+.lesson {
+
+   .lesson-heading {
+      text-transform: uppercase;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+   }
+
+   >.row {
+      >.col-lg-9 {
+         @media (min-width: $grid-lg) {
+            width: 70%;
+         }
+         >.row {
+            --bs-gutter-x: 1rem;
+         }
+      }
+   }
+
+   .lesson-card {
+      flex-direction: column;
+
+      &.lesson-intro {
+         background-color: #485759;
+
+         .row {
+            justify-content: space-between;
+
+            .licm-title {
+               display: flex;
+               flex-direction: column;
+               width: min-content;
+
+               h2 {
+                  font-size: 1rem;
+                  font-weight: 700;
+                  margin-bottom: 0;
+                  white-space: nowrap;
+               }
+
+               p {
+                  font-size: 1rem;
+                  color: #63B4FF;
+                  border-bottom: solid 2px white;
+                  white-space: nowrap;
+                  padding-bottom: 1rem;
+                  padding-right: 1rem;
+               }
+            }
+
+            .lic-main {
+               >p {
+                  margin-bottom: unset;
+                  font-weight: 600;
+               }
+            }
+
+            >.col-lg-7 {
+               @media (min-width: $grid-lg) {
+                  width: 62%;
+               }
+            }
+
+            >.col-lg-4 {
+               display: flex;
+               align-items: flex-end;
+               position: relative;
+               overflow: hidden;
+
+               @media (min-width: $grid-lg) {
+                  width: 30%;
+               }
+
+               img {
+                  position: absolute;
+                  width: 22rem;
+               }
+            }
+         }
+      }
+
+      &.lesson-question-card {
+         padding: 1.2rem;
+         border-radius: $border-radius;
+         background-color: #293133;
+
+         &.active {
+            .lqc-question {
+               opacity: 1;
+            }
+
+            .lqc-hints {
+               opacity: 1;
+            }
+         }
+
+         h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8B8B8B;
+            margin-bottom: 0.8rem;
+         }
+
+         h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+
+            svg {
+               height: 2.25rem;
+            }
+         }
+
+         .lqc-question {
+            border-bottom: solid 2px #4A4A4A;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+         }
+
+         .lqc-hints {
+            border-bottom: solid 2px #4A4A4A;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+
+            .lqcm-hint {
+               user-select: none;
+               cursor: pointer;
+               filter: blur(8px);
+               transition: filter 0.1s ease-in-out color 0.5s ease-in-out;
+
+               &.active {
+                  filter: blur(0);
+                  transition: filter 0.3s ease-in-out;
+               }
+
+               &:nth-child(3) {
+                  &.active {
+                     color: #63B4FF;
+                  }
+               }
+            }
+         }
+
+         .lqc-answer {
+
+            h3 {
+               font-size: 1rem;
+               font-weight: 600;
+               color: #8B8B8B;
+               margin-bottom: 0.4rem;
+            }
+
+            .lqc-answer-input {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               border-radius: calc(#{$border-radius} * 0.8);
+               background-color: #485759;
+               padding: 0rem 1rem;
+
+               input {
+                  background-color: unset;
+                  border: unset;
+                  outline: unset;
+                  padding: 1rem 0.5rem;
+                  padding-right: 2rem;
+                  font-size: 1.5rem;
+                  font-weight: 600;
+                  color: white;
+                  width: 100%;
+
+                  &.lqcai-submit {
+                     display: flex;
+                     height: min-content;
+                     align-items: center;
+                     background-color: #63B4FF;
+                     color: white;
+                     font-weight: 700;
+                     font-size: 1rem;
+                     border: unset;
+                     border-radius: 2rem;
+                     padding: 0.5rem 3rem;
+                     width: unset;
+                  }
+               }
+            }
+         }
+      }
+
+      .lqc-dictionary {
+         display: flex;
+         height: 100%;
+         padding: 1.2rem;
+         border-radius: $border-radius;
+         background-color: #293133;
+      }
+   }
+
+   .lic-main {
+      padding: 1.2rem;
+   }
+
+   .lic-dictionary {
+      padding: 1rem;
+   }
+}

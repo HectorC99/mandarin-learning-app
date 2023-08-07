@@ -1,0 +1,28 @@
+@import '../../assets/variables.scss';
+
+.lesson-card {
+   display: flex;
+   background-color: #4a5b5e;
+   border-radius: $border-radius;
+   text-decoration: none;
+   color: white;
+   overflow: hidden;
+
+   &:hover {
+      color: white;
+   }
+
+   &:not(:last-child) {
+      margin-bottom: 1rem;
+   }
+
+   .lc-thumbnail {
+      aspect-ratio: 1 / 1;
+      height: 100%;
+      border-radius: $border-radius 0 0 $border-radius;
+   }
+
+   .lc-main {
+      padding: 1rem;
+   }
+}
