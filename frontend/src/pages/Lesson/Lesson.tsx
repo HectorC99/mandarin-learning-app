@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo, FormEvent } from 'react'
 import './Lesson.scss'
 import { useLocation, useParams } from 'react-router-dom'
 import { lessons } from '../../constants/lessons'
@@ -17,6 +17,9 @@ function Lesson() {
       lessonData = lessons.find(lesson => lesson.id === lessonId)
    }
 
+   const userAnswer = useRef<HTMLInputElement>(null)
+   const questionHints = useRef(Array(3))
+   const lessonQuestionCard = useRef<HTMLDivElement>(null)
    const [answer, setAnswer] = useState('')
    const [lessonProgress, setLessonProgress] = useState({ section: 0, question: 0 })
    const [lessonScore, setLessonScore] = useState({ current: 1, total: 0 })
@@ -55,13 +58,10 @@ function Lesson() {
    lessonQuestion && (lessonQuestion.question = lessonQuestion.sentence[`${lessonLanguages[0]}`])
    lessonQuestion && (lessonQuestion.answer = lessonQuestion.sentence[`${lessonLanguages[1]}`])
 
-   const userAnswer = useRef<HTMLInputElement>(null)
-   const questionHints = useRef(Array(3))
-   const lessonQuestionCard = useRef<HTMLDivElement>(null)
-
-     // when the answer changes, check if the answer is correct, if it is, move to the next question
-   useEffect(() => {
-      if (answer.toLowerCase() === lessonQuestion.answer.toLowerCase()) {
+   // when an answer is submitted, check if the answer is correct, if it is, move to the next question
+   const submitAnswer = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      if (userAnswer.current && userAnswer.current.value.toLowerCase() === lessonQuestion.answer.toLowerCase()) {
          // remove the active class to hide the old question
          lessonQuestionCard.current && lessonQuestionCard.current.classList.remove('active')
 
@@ -81,18 +81,11 @@ function Lesson() {
             lessonQuestionCard.current && lessonQuestionCard.current.classList.add('active')
          }, 500)
 
-      } else if (answer.toLowerCase() !== '') {
+      } else if (userAnswer.current && userAnswer.current.value.toLowerCase() !== '') {
          // if the answer is incorrect, replace the hints with the answer
          questionHints.current[1].classList.add('active')
          setLessonScore({ current: 0, total: lessonScore.total })
       }
-   }, [answer])
-
-   const onSubmitAnswer = (e: any) => {
-      e.preventDefault()
-
-      // type guard
-      userAnswer.current && setAnswer(userAnswer.current.value)
    }
 
    const revealHint = (e: any) => {
@@ -119,7 +112,7 @@ function Lesson() {
                            // if the lesson is complete, show the lesson complete screen
                            case lessonSection.questions.length: return <SectionComplete {...{ lessonScore, dictionaryWords, lessonSection }} />
                            // if the lesson is not complete, show the lesson question screen
-                           default: return <LessonQuestion {...{ lessonQuestion, lessonProgress, lessonQuestionCard, lessonLanguages, questionHints, userAnswer, revealHint, onSubmitAnswer }} />
+                           default: return <LessonQuestion {...{ lessonQuestion, lessonProgress, lessonQuestionCard, lessonLanguages, questionHints, userAnswer, revealHint, submitAnswer }} />
                         }
                      })()}
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function LessonQuestion({ lessonQuestion, lessonProgress, lessonQuestionCard, lessonLanguages, questionHints, userAnswer, revealHint, onSubmitAnswer }: any) {
+function LessonQuestion({ lessonQuestion, lessonProgress, lessonQuestionCard, lessonLanguages, questionHints, userAnswer, revealHint, submitAnswer }: any) {
    console.log(lessonQuestion.hints)
    return (
       <div className="lesson-card lesson-question-card active" ref={lessonQuestionCard}>
@@ -29,7 +29,7 @@ function LessonQuestion({ lessonQuestion, lessonProgress, lessonQuestionCard, le
          </div>
          <div className="lqc-answer">
             <h3>Answer</h3>
-            <form className="lqc-answer-input" onSubmit={onSubmitAnswer}>
+            <form className="lqc-answer-input" onSubmit={submitAnswer}>
                <input id="userAnswer" ref={userAnswer} type="text" autoFocus autoComplete="off" />
                <input type="submit" className="lqcai-submit" value="Submit" />
             </form>
