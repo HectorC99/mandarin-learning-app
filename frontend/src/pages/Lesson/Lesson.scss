@@ -130,7 +130,7 @@
                user-select: none;
                cursor: pointer;
                filter: blur(8px);
-               transition: filter 0.1s ease-in-out color 0.5s ease-in-out;
+               transition: filter 0.1s ease-in-out;
 
                &.active {
                   filter: blur(0);

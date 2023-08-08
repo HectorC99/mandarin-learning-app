@@ -20,7 +20,6 @@ function Lesson() {
    const userAnswer = useRef<HTMLInputElement>(null)
    const questionHints = useRef(Array(3))
    const lessonQuestionCard = useRef<HTMLDivElement>(null)
-   const [answer, setAnswer] = useState('')
    const [lessonProgress, setLessonProgress] = useState({ section: 0, question: 0 })
    const [lessonScore, setLessonScore] = useState({ current: 1, total: 0 })
    const [lessonSection] = useState(lessonData.sections[lessonProgress.section as keyof typeof lessonData.sections])
@@ -91,7 +90,7 @@ function Lesson() {
    const revealHint = (e: any) => {
       if (!e.target.closest('.lqcm-hint').classList.contains('active')) {
          e.target.closest('.lqcm-hint').classList.add('active')
-         setLessonScore({ current: lessonScore.current - 0.2, total: lessonScore.total })
+         setLessonScore({ current: lessonScore.current * 0.8, total: lessonScore.total })
       }
    }
 
@@ -138,6 +137,8 @@ What do we need to do?
 - We need to display the selected dictionary words
 - 
 
+right, where are we at?
+weve done everything up until the complete section and dictionary side card
 
 */
 

@@ -70,7 +70,7 @@ export const lessons = [
                      },
                      {
                         type: "answer",
-                        english: "Answer",
+                        english: "Can I have a coffee please?",
                         pinyin: "Qing gei wo yibei kafei?",
                      }
                   ]
@@ -88,7 +88,7 @@ export const lessons = [
                      },
                      {
                         type: "answer",
-                        english: "Answer",
+                        english: "How much does a coffee cost?",
                         pinyin: "Yibei kafei duo shao qian?",
                      }
                   ]

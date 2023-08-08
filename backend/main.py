@@ -1,22 +1,17 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from openapi import *
+from flask import Flask
+from flask_cors import CORS
+from flask_restful import Resource, Api
+from openai import *
 
 #App object
-app = FastAPI()
+app = Flask(__name__)
+api = Api(app)
 
-origins = [
-   'https://localhost:3000',
-]
+class Lessons(Resource):
+   def get(self):
+      return 'lessons'
 
-app.add_middleware(
-   CORSMiddleware,
-   allow_origins=origins,
-   allow_credentials=True,
-   allow_methods=["*"],
-   allow_headers=["*"],
-)
+api.add_resource(Lessons, '/lessons')
 
-@app.get('/')
-def read_root():
-   return {'Hello': 'World'}
+if __name__ == '__main__':
+   app.run
