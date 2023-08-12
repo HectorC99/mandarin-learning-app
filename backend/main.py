@@ -7,11 +7,31 @@ from openai import *
 app = Flask(__name__)
 api = Api(app)
 
+fakeDatabase = {
+   'lessons': [
+      {
+         'id': 1,
+         'name': 'lesson1',
+         'description': 'description1'
+      },
+      {
+         'id': 2,
+         'name': 'lesson2',
+         'description': 'description2'
+      },
+      {
+         'id': 3,
+         'name': 'lesson3',
+         'description': 'description3'
+      }
+   ]
+}
+
 class Lessons(Resource):
    def get(self):
-      return 'lessons'
+      return fakeDatabase['lessons']
 
-api.add_resource(Lessons, '/lessons')
+api.add_resource(Lessons, '/')
 
 if __name__ == '__main__':
-   app.run
+   app.run(debug=True)
