@@ -1,35 +1,38 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from flask_restful import Resource, Api
-from openai import *
+from decouple import config
+import openai
+import os
+
+openai.organization = "org-9BDdApfdksfAJ2XsyNYvGTjI"
+openai.api_key = config('OPENAI_API_KEY')
+openai.Model.list()
 
 #App object
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
-fakeDatabase = {
-   'lessons': [
-      {
-         'id': 1,
-         'name': 'lesson1',
-         'description': 'description1'
-      },
-      {
-         'id': 2,
-         'name': 'lesson2',
-         'description': 'description2'
-      },
-      {
-         'id': 3,
-         'name': 'lesson3',
-         'description': 'description3'
-      }
-   ]
-}
-
 class Lessons(Resource):
+
+   def completion(self, params):
+      return openai.ChatCompletion.create(
+         model="gpt-3.5-turbo",
+         messages=[
+            {
+               'role': 'user',
+               'content': f'Answer the following query with the exact string response "yes" or "no", if "no" explain why:\n\nQ: Is this an acceptable translation (Mandarin : English) excluding punctuation: "{params["pinyin"]}" : "{params["english"]}"'
+            }
+         ]
+      )
+
    def get(self):
-      return fakeDatabase['lessons']
+      return 'hello :D'
+   
+   def post(self):
+      data = request.get_json()
+      return self.completion(data)
 
 api.add_resource(Lessons, '/')
 

@@ -28,6 +28,8 @@ function Lesson() {
       { word: 'Word', definition: 'Definition' },
       { word: 'Word', definition: 'Definition' },
       { word: 'Word', definition: 'Definition' },
+      { word: 'Word', definition: 'Definition' },
+      { word: 'Word', definition: 'Definition' },
    ])
 
    function shuffle(array: any[]) {
@@ -44,6 +46,17 @@ function Lesson() {
       return array
    }
 
+   function setLoading(loading: boolean) {
+      const lessonQuestionCardElement = lessonQuestionCard.current
+      if (lessonQuestionCardElement) {
+         if (loading) {
+            lessonQuestionCardElement.classList.add('loading')
+         } else {
+            lessonQuestionCardElement.classList.remove('loading')
+         }
+      }
+   }
+
    // Shuffle the questions so they are in a random order, the value should not change or be re-shuffled when the component re-renders
    const lessonQuestions = useMemo(() => {
       return shuffle(lessonSection.questions)
@@ -58,11 +71,21 @@ function Lesson() {
    lessonQuestion && (lessonQuestion.answer = lessonQuestion.sentence[`${lessonLanguages[1]}`])
 
    // when an answer is submitted, check if the answer is correct, if it is, move to the next question
-   const submitAnswer = (e: FormEvent<HTMLFormElement>) => {
+   const submitAnswer = async(e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      if (userAnswer.current && userAnswer.current.value.toLowerCase() === lessonQuestion.answer.toLowerCase()) {
+      setLoading(true)
+
+      const answerValidity = await fetch('http://localhost:5000/', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ [lessonLanguages[0]]: lessonQuestion.question, [lessonLanguages[1]]: (userAnswer.current && userAnswer.current.value.toLowerCase()) })
+      }).then(response => {
+         return response.json()
+      })
+
+      if (answerValidity.choices[0].message.content.toLowerCase() === 'yes') {
          // remove the active class to hide the old question
-         lessonQuestionCard.current && lessonQuestionCard.current.classList.remove('active')
+         lessonQuestionCard?.current?.classList.remove('active')
 
          setTimeout(() => {
             // update the score and progress AFTER the hide animation has finished
@@ -77,11 +100,12 @@ function Lesson() {
             }
 
             // add the active class back to reveal the new question
-            lessonQuestionCard.current && lessonQuestionCard.current.classList.add('active')
+            lessonQuestionCard?.current?.classList.add('active')
          }, 500)
 
-      } else if (userAnswer.current && userAnswer.current.value.toLowerCase() !== '') {
+      } else if (userAnswer?.current?.value.toLowerCase() !== '') {
          // if the answer is incorrect, replace the hints with the answer
+         console.log(answerValidity.choices[0].message.content.toLowerCase())
          questionHints.current[1].classList.add('active')
          setLessonScore({ current: 0, total: lessonScore.total })
       }
