@@ -23,5 +23,5 @@ export {
    LessonIntro,
    DictionarySideCard,
    Dictionary,
-   CheatSheet
+   CheatSheet,
 }

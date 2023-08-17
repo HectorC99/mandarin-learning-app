@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useMemo, FormEvent } from 'react'
 import './Lesson.scss'
 import { useLocation, useParams } from 'react-router-dom'
 import { lessons } from '../../constants/lessons'
-import { LessonIntro, LessonQuestion, SectionComplete, DictionarySideCard, CheatSheet } from '../index.js'
+import { LessonIntro, LessonQuestion, SectionComplete, DictionarySideCard, Dictionary, CheatSheet } from '../index.js'
 import donutImage from '../../assets/media/images/donutImage.svg'
 
 function Lesson() {
@@ -91,7 +91,6 @@ function Lesson() {
             // update the score and progress AFTER the hide animation has finished
             setLessonScore({ current: 1, total: lessonScore.total + lessonScore.current })
             setLessonProgress({ section: lessonProgress.section, question: Number(lessonProgress.question) + 1 })
-            // type guard
             userAnswer.current && (userAnswer.current.value = '')
 
             // remove the active class from all the hints
@@ -141,6 +140,7 @@ function Lesson() {
 
                   </div>
                   <div className="col-lg-3">
+                     <Dictionary />
                      <CheatSheet {...{ dictionaryWords }} />
                   </div>
                </div>

@@ -9,12 +9,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.7rem;
-      border-radius: 0.5rem;
-      background-color: #333D40;
+      padding: 0.8rem;
+
+      &#open-dictionary {
+         border-radius: 0.5rem;
+         background-color: #333D40;
+         user-select: none;
+         cursor: pointer;
+      }
 
       &:not(:last-child) {
-         margin-bottom: 0.7rem;
+         border-bottom: solid 1px #333D40;
       }
 
       h3 {
