@@ -1,11 +1,16 @@
 import './Dictionary.scss'
 import { useRef } from 'react'
 
-function Dictionary() {
-  const dictionaryContainer = useRef<HTMLDivElement>(null)
+function Dictionary({ dictionaryRef }: any) {
+
+   const closeDictionary = (e: any) => {
+      if (e.target.classList.contains('dictionary-container')) {
+         dictionaryRef.current.classList.remove('active')
+      }
+   }
 
   return (
-    <div ref={dictionaryContainer} className="dictionary-container">
+    <div ref={dictionaryRef} className="dictionary-container" onClick={closeDictionary}>
       <div className="dictionary">
         <div className="dictionary-header">
           <div className="dh-title">

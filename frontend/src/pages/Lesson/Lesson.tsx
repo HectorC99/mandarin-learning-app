@@ -17,9 +17,10 @@ function Lesson() {
       lessonData = lessons.find(lesson => lesson.id === lessonId)
    }
 
-   const userAnswer = useRef<HTMLInputElement>(null)
-   const questionHints = useRef(Array(3))
-   const lessonQuestionCard = useRef<HTMLDivElement>(null)
+   const userAnswerRef = useRef<HTMLInputElement>(null)
+   const questionHintsRef = useRef(Array(3))
+   const lessonQuestionCardRef = useRef<HTMLDivElement>(null)
+   const dictionaryRef = useRef<HTMLDivElement>(null)
    const [lessonProgress, setLessonProgress] = useState({ section: 0, question: 0 })
    const [lessonScore, setLessonScore] = useState({ current: 1, total: 0 })
    const [lessonSection] = useState(lessonData.sections[lessonProgress.section as keyof typeof lessonData.sections])
@@ -47,7 +48,7 @@ function Lesson() {
    }
 
    function setLoading(loading: boolean) {
-      const lessonQuestionCardElement = lessonQuestionCard.current
+      const lessonQuestionCardElement = lessonQuestionCardRef.current
       if (lessonQuestionCardElement) {
          if (loading) {
             lessonQuestionCardElement.classList.add('loading')
@@ -78,34 +79,34 @@ function Lesson() {
       const answerValidity = await fetch('http://localhost:5000/', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ [lessonLanguages[0]]: lessonQuestion.question, [lessonLanguages[1]]: (userAnswer.current && userAnswer.current.value.toLowerCase()) })
+         body: JSON.stringify({ [lessonLanguages[0]]: lessonQuestion.question, [lessonLanguages[1]]: (userAnswerRef.current && userAnswerRef.current.value.toLowerCase()) })
       }).then(response => {
          return response.json()
       })
 
       if (answerValidity.choices[0].message.content.toLowerCase() === 'yes') {
          // remove the active class to hide the old question
-         lessonQuestionCard?.current?.classList.remove('active')
+         lessonQuestionCardRef?.current?.classList.remove('active')
 
          setTimeout(() => {
             // update the score and progress AFTER the hide animation has finished
             setLessonScore({ current: 1, total: lessonScore.total + lessonScore.current })
             setLessonProgress({ section: lessonProgress.section, question: Number(lessonProgress.question) + 1 })
-            userAnswer.current && (userAnswer.current.value = '')
+            userAnswerRef.current && (userAnswerRef.current.value = '')
 
             // remove the active class from all the hints
-            for (let i = 0; i < questionHints.current.length; i++) {
-               questionHints.current[i]?.classList.remove('active')
+            for (let i = 0; i < questionHintsRef.current.length; i++) {
+               questionHintsRef.current[i]?.classList.remove('active')
             }
 
             // add the active class back to reveal the new question
-            lessonQuestionCard?.current?.classList.add('active')
+            lessonQuestionCardRef?.current?.classList.add('active')
          }, 500)
 
-      } else if (userAnswer?.current?.value.toLowerCase() !== '') {
+      } else if (userAnswerRef?.current?.value.toLowerCase() !== '') {
          // if the answer is incorrect, replace the hints with the answer
          console.log(answerValidity.choices[0].message.content.toLowerCase())
-         questionHints.current[1].classList.add('active')
+         questionHintsRef.current[1].classList.add('active')
          setLessonScore({ current: 0, total: lessonScore.total })
       }
    }
@@ -114,6 +115,16 @@ function Lesson() {
       if (!e.target.closest('.lqcm-hint').classList.contains('active')) {
          e.target.closest('.lqcm-hint').classList.add('active')
          setLessonScore({ current: lessonScore.current * 0.8, total: lessonScore.total })
+      }
+   }
+
+   const openDictionary = () => {
+      if (dictionaryRef.current) {
+         if (dictionaryRef.current.classList.contains('active')) {
+            dictionaryRef.current.classList.remove('active')
+         } else {
+            dictionaryRef.current.classList.add('active')
+         }
       }
    }
 
@@ -134,14 +145,14 @@ function Lesson() {
                            // if the lesson is complete, show the lesson complete screen
                            case lessonSection.questions.length: return <SectionComplete {...{ lessonScore, dictionaryWords, lessonSection }} />
                            // if the lesson is not complete, show the lesson question screen
-                           default: return <LessonQuestion {...{ lessonQuestion, lessonProgress, lessonQuestionCard, lessonLanguages, questionHints, userAnswer, revealHint, submitAnswer }} />
+                           default: return <LessonQuestion {...{ lessonQuestion, lessonProgress, lessonLanguages, lessonQuestionCardRef, questionHintsRef, userAnswerRef, revealHint, submitAnswer }} />
                         }
                      })()}
 
                   </div>
                   <div className="col-lg-3">
-                     <Dictionary />
-                     <CheatSheet {...{ dictionaryWords }} />
+                     <Dictionary {...{ dictionaryRef }} />
+                     <CheatSheet {...{ dictionaryWords, openDictionary }} />
                   </div>
                </div>
             </div>
