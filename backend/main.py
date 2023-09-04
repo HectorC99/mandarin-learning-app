@@ -22,7 +22,7 @@ class Lessons(Resource):
          messages=[
             {
                'role': 'user',
-               'content': f'Answer the following query with the exact string response "yes" or "no", if "no" explain why:\n\nQ: Is this an acceptable translation (Mandarin : English) excluding punctuation: "{params["pinyin"]}" : "{params["english"]}"'
+               'content': f'Answer the following query with the string "yes" or "no" (no punctuation), if "no", also provide an explaination:\n\nQ: Is this an acceptable translation (Mandarin : English) An acceptable translation is one that conveys the same meaning as the original sentence, and may not be a word-for-word translation : "{params["pinyin"]}" : "{params["english"]}"'
             }
          ]
       )

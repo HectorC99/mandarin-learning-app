@@ -2,7 +2,13 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import './LessonItem.scss'
 
-function LessonItem(lesson: any) {
+type lessonType = {
+   id: string,
+   title: string,
+   description: string
+}
+
+function LessonItem(lesson: lessonType) {
    return (
       <Link
          className="lesson-card"

@@ -111,10 +111,13 @@ function Lesson() {
       }
    }
 
-   const revealHint = (e: any) => {
-      if (!e.target.closest('.lqcm-hint').classList.contains('active')) {
-         e.target.closest('.lqcm-hint').classList.add('active')
-         setLessonScore({ current: lessonScore.current * 0.8, total: lessonScore.total })
+   const revealHint = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const targetElement = e.target as HTMLElement;
+      const hintElement = targetElement.closest('.lqcm-hint') as HTMLDivElement | null;
+      
+      if (hintElement && !hintElement.classList.contains('active')) {
+         hintElement.classList.add('active');
+         setLessonScore({ current: lessonScore.current * 0.8, total: lessonScore.total });
       }
    }
 
