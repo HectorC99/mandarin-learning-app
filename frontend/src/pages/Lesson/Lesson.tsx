@@ -1,8 +1,9 @@
-import { useRef, useState, useEffect, useMemo, FormEvent } from 'react'
+import { useRef, useState, useMemo, FormEvent } from 'react'
 import './Lesson.scss'
 import { useLocation, useParams } from 'react-router-dom'
 import { lessons } from '../../constants/lessons'
 import { LessonIntro, LessonQuestion, SectionComplete, DictionarySideCard, Dictionary, CheatSheet } from '../index.js'
+import { ShuffleArray } from '../../utils/index.js'
 import donutImage from '../../assets/media/images/donutImage.svg'
 
 function Lesson() {
@@ -33,20 +34,6 @@ function Lesson() {
       { word: 'Word', definition: 'Definition' },
    ])
 
-   function shuffle(array: any[]) {
-      let currentIndex = array.length, randomIndex
-      // While there remain elements to shuffle
-      while (currentIndex !== 0) {
-         // Pick a remaining element
-         randomIndex = Math.floor(Math.random() * currentIndex)
-         currentIndex--
-         // And swap it with the current element
-         [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]]
-      }
-      return array
-   }
-
    function setLoading(loading: boolean) {
       const lessonQuestionCardElement = lessonQuestionCardRef.current
       if (lessonQuestionCardElement) {
@@ -60,13 +47,13 @@ function Lesson() {
 
    // Shuffle the questions so they are in a random order, the value should not change or be re-shuffled when the component re-renders
    const lessonQuestions = useMemo(() => {
-      return shuffle(lessonSection.questions)
+      return ShuffleArray(lessonSection.questions)
    }, [])
    const lessonQuestion = lessonQuestions[lessonProgress.question]
 
    // Shuffle the languages so they are in a random order, the value should change when the user moves to the next question
    const lessonLanguages = useMemo(() => {
-      return shuffle(['english', 'pinyin'])
+      return ShuffleArray(['english', 'pinyin'])
    }, [lessonProgress])
    lessonQuestion && (lessonQuestion.question = lessonQuestion.sentence[`${lessonLanguages[0]}`])
    lessonQuestion && (lessonQuestion.answer = lessonQuestion.sentence[`${lessonLanguages[1]}`])
@@ -170,13 +157,6 @@ function Lesson() {
 /*
 
 What do we need to do?
-
-- We need to create the dictionary side card
-- We need to display the selected dictionary words
-- 
-
-right, where are we at?
-weve done everything up until the complete section and dictionary side card
 
 */
 
